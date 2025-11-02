@@ -124,7 +124,6 @@ def compute_weights_from_uncertainty(
     Returns:
         torch.Tensor: Weight matrix of shape [N, M].
     """
-
     compute_weight = UncertaintyWeightComputer(
         config_dto
     )
