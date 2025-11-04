@@ -31,6 +31,10 @@ It robustly handles *intra-* and *inter-class variability*, enabling consistent 
 ## Installation 
 
 **Clone the GitHub repo**
-git clone <GITHUB_URL>
-cd <repo-name>
+
+# Clone the repository
+
+git clone https://github.com/Olemou/SpatialCL.git
+cd Spatialcl
+
 
