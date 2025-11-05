@@ -71,7 +71,7 @@ pip install -r requirements.txt
 Let's suppose the image is loaded and readable.
 
 **🧩Occlusion**
-<div align="center" style="max-width:80%; margin:auto;">
+<div align="left" style="max-width:80%; margin-left:10%;">
 <pre>
 <code class="language-python">
 from Spatialcl.thermal import thermal_occlusion
@@ -86,7 +86,7 @@ thermal_occlusion(
 </div>
 
 **Contrast**
-<div align="center" style="max-width:80%; margin:auto;">
+<div align="left" style="max-width:80%; margin-left:10%;">
 <pre>
 <code class="language-python">
 from Spatialcl.thermal import thermal_contrast
@@ -98,7 +98,7 @@ thermal_contrast(
 </div>
 
 **mixte brightness and contrast**
-<div align="center" style="max-width:80%; margin:auto;">
+<div align="left" style="max-width:80%; margin-left:10%;">
 <pre>
 <code class="language-python">
 from Spatialcl.thermal import brightness_contrast
