@@ -9,7 +9,7 @@ It robustly handles *intra-* and *inter-class variability*, enabling consistent 
 
 # Framework Architecture
   <p align="center">
-  <img src="assets/framework.png" alt="SpatialCL Architecture" width="800"/>
+  <img src="assets/framework.png" alt="SpatialCL Architecture" width="850"/>
 </p>
 
 **figure 1:** *Through the encoder, feature embeddings are extracted to obtain zij , which are subsequently normalized*. *From these embeddings, the cohesion*
@@ -20,6 +20,17 @@ It robustly handles *intra-* and *inter-class variability*, enabling consistent 
 *compute the adaptive weight wij , addressing intra-class variability. For inter-class modeling, the parameter β is computed as described in the schema above*,
 *allowing the model to focus on hard negatives and enhance class separation. All these components are integrated into the final loss function Lij .*
 
+## 🎯 Why DISCO Submodule of SpatialCL?
+DISCO (Detection of Indoor Spills with Contrastive learning) addresses one of the most persistent challenges in computer vision: uncertainty under weak supervision. Traditional vision systems are typically designed and optimized for perception tasks involving rigid, well-structured objects with distinct geometric cues. However, these systems often fail when faced with visually ambiguous targets such as indoor liquid spills, whose irregular shapes, diffuse boundaries, and variable textures defy conventional object representations.
+
+- ✨ *The difficulty arises from several intertwined factors:*
+- ✨ *The absence of clear contours or well-defined shapes;*
+- ✨ *Extreme intra-class variability in appearance and scale;*
+- ✨ *Weak or inconsistent edge and texture cues;*
+- ✨ *Frequent occlusion and foreground–background blending;*
+- ✨ *A scarcity of reliable labeled examples; and*
+- ✨ *environmental disturbances such as illumination changes, surface reflections, and sensor noise*.
+
 # Key Features
 - ✅ Handles **ambiguous and irregular objects** that standard vision models struggle with
 - ✅ Supports: **RGB, thermal, depth, etc.**
@@ -28,37 +39,33 @@ It robustly handles *intra-* and *inter-class variability*, enabling consistent 
 - ✅ Handles **class imbalance**
 - ✅ Easy integration into existing PyTorch pipelines
 
-# Installation
+## 📦Installation
 
-## 1 PyPI
+###  PyPI
 <pre>
 pip install -i https://test.pypi.org/simple/ spatialcl==0.3.4
 </pre>
-## 2.1 Clone the repository
-
+### Clone the repository
 <pre>
 git clone https://github.com/Olemou/SpatialCL.git 
-
 cd Spatialcl
 </pre>
-
-## 2.2 Create and activate a virtual environment (optional):
+###  Create and activate a virtual environment (optional):
 <pre>
   python -m venv venv
-
    ---On Linux/macOS---
     source venv/bin/activate
-
     --On Windows---
     venv\Scripts\activate
  </pre>  
-
- 
- ## 2.3 Install dependencies:
+ ###  Install dependencies:
 <pre> 
 pip install --upgrade pip
-
 pip install -r requirements.txt
 </pre>
+
+
+
+
 
 
