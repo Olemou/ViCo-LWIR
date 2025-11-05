@@ -41,8 +41,8 @@ DISCO (Detection of Indoor Spills with Contrastive learning) addresses one of th
 
 ## 📦Installation
 
-*** - PyPI ***
-<div align="left" style="max-width:50%; margin-left:10%;">
+- ***PyPI***
+<div align="left" style="margin-left:10%;">
 <pre>
 <code class="language-python">
 pip install -i https://test.pypi.org/simple/ spatialcl==0.3.4
@@ -50,8 +50,8 @@ pip install -i https://test.pypi.org/simple/ spatialcl==0.3.4
 </pre>
 </div>
 
-*** - Clone the repository ***
-<div align="left" style="max-width:50%; margin-left:10%;">
+- ***Clone the repository***
+<div align="left" style="margin-left:10%;">
 <pre>
 <code class="language-python">
 git clone https://github.com/Olemou/SpatialCL.git 
@@ -60,8 +60,8 @@ cd Spatialcl
 </pre>
 </div>
 
-*** - Create and activate a virtual environment (optional): ***
- <div align="left" style="max-width:50%; margin-left:10%;">
+- ***Create and activate a virtual environment (optional):***
+ <div align="left" style="margin-left:10%;">
 <pre>
 <code class="language-python">
  python -m venv venv
@@ -73,7 +73,7 @@ cd Spatialcl
 </pre>
 </div>
 
- *** - Install dependencies: ****
+ - ***Install dependencies:***
 <div align="left" style="max-width:50%; margin-left:10%;">
 <pre>
 <code class="language-python">
@@ -89,7 +89,7 @@ pip install -r requirements.txt
 ### 🚀 Thermal Augmentation
 Let's suppose the image is loaded and readable.
 
-*** - 🧩 Occlusion ***
+- ***🧩 Occlusion***
 <div align="left" style="max-width:50%; margin-left:10%;">
 <pre>
 <code class="language-python">
@@ -104,8 +104,8 @@ thermal_occlusion(
 </pre>
 </div>
 
-*** - 🎛️ Contrast ***
-<div align="left" style="max-width:50%; margin-left:10%;">
+- *** 🎛️ Contrast***
+<div align="left" style="margin-left:10%;">
 <pre>
 <code class="language-python">
 from Spatialcl.thermal import thermal_contrast
@@ -116,8 +116,8 @@ thermal_contrast(
 </pre>
 </div>
 
-*** - ☀️ Mixed Brightness & Contrast ***
-<div align="left" style="max-width:50%; margin-left:10%;">
+- *** ☀️ Mixed Brightness & Contrast***
+<div align="left" style="margin-left:10%;">
 <pre>
 <code class="language-python">
 from Spatialcl.thermal import brightness_contrast
@@ -130,8 +130,8 @@ brightness_contrast(
 </pre>
 </div>
 
-*** - 🌀 Mixed Brightness & Contrast ***
-<div align="left" style="max-width:50%; margin-left:10%;">
+- ***🌀 Mixed Brightness & Contrast***
+<div align="left" style="margin-left:10%;">
 <pre>
 <code class="language-python">
 from Spatialcl.thermal import elastic_transform
