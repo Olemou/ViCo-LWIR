@@ -1,5 +1,5 @@
 from typing import Literal
-from utils import *
+from clr_utils import *
 from spatialcl.clearn import compute_weights_from_uncertainty
 from spatialcl._dto.mask import Maskdto
 from spatialcl._dto.config import ConfigDto

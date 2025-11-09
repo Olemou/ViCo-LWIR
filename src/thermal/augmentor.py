@@ -1,6 +1,5 @@
-from utils import *
 
-
+from clr_utils import *
 class ThermalAugmentor:
     def __init__(
         self,

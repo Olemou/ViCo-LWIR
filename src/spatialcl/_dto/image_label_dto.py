@@ -1,4 +1,4 @@
-from utils import *
+from clr_utils import *
 from spatialcl._config.config import load_config
 from typing import Dict
 from dataclasses import field

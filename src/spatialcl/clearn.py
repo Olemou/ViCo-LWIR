@@ -1,7 +1,7 @@
 import torch
 from torch import Tensor
 from spatialcl._dto.config import ConfigDto
-from utils import *
+from clr_utils import *
 
 
 class UncertaintyWeightComputer:
