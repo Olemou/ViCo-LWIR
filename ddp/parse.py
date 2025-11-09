@@ -39,7 +39,7 @@ def parse_ddp_args():
     parser.add_argument(
         "--num_workers", type=int, default=int(os.environ.get("OMP_NUM_THREADS", 4))
     )
-    parser.add_argument("num_epochs", type=int, default=100)
+    parser.add_argument("--num_epochs", type=int, default=100)
     parser.add_argument("--warmup_epochs", type=int, default=10)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("temperature", type=float, default=0.1)
