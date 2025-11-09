@@ -1,6 +1,5 @@
+
 from clr_utils import*
-
-
 class ConfigDto:
     """
     Data Transfer Object for configuration parameters and tensor dimensions.

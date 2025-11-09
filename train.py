@@ -1,4 +1,4 @@
-from clr_utils import *
+from utils import *
 from torch.utils.data import DataLoader, DistributedSampler
 from ddp.env import setup_env, seed_everything
 from ddp.parse import parse_ddp_args, init_distributed_mode

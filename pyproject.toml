@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "spatialcl"
-version = "0.3.4"
+version = "0.3.6"
 description = "Plug-and-play contrastive learning framework designed for spatially structured modalities."
 readme = "README.md"
 requires-python = ">=3.12"
@@ -50,7 +50,7 @@ Repository = "https://github.com/Olemou/SpatialCL"
 
 [tool.setuptools.packages.find]
 where = ["src","assets",".github"]
-include = ["spatial*","thermal*","utils*"]
+include = ["spatial*","thermal*","clr_utils*"]
 exclude = [".workflows*","assets*"]
 
 [tool.setuptools]
