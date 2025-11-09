@@ -5,13 +5,12 @@ from  ddp.env import setup_env, seed_everything
 from ddp.parse import parse_ddp_args,init_distributed_mode
 from utils.dataloader import get_datasets_and_loaders, ThermalAugmentation, RgbAugmentation
 from utils.config import ThermalAugConfig, RgbAugConfig
-from utils.logging import Logger
+from  train_logger.logger import TrainLogger
 from model.vit import  VisionTransformer
 from model.load_weight import load_pretrained_vit_weights
 from utils.scheduler import get_optimizer, cosine_schedule
 from spatialcl.uwcl import build_uwcl
-
-
+from check_point.save_point import save_checkpoint
 
 
 def param_dataloader_init(
@@ -166,7 +165,11 @@ def main(
         dataset_class=dataset_class,
         modality=modality,
     )
-
+    
+    rank = get_rank() if torch.distributed.is_initialized() else 0
+    logger = TrainLogger(log_dir="./logs", rank=rank)
+    
+    logger.info("Starting training...")
     # --- Model, criterion, optimizer ---
     model = wrap_model(VisionTransformer(variant=vit_varaint))
     device = get_model_device(model)
@@ -176,12 +179,12 @@ def main(
         device=device
     )
     optimizer = get_optimizer(model=weighted_model)
-    rank = get_rank() if torch.distributed.is_initialized() else 0
-    logger = Logger(log_dir="./logs", rank=rank)
     best_val_loss = float("inf")
-
-    logger.info("Starting training...")
+    
+    logger.info(f"model on device: {device}")
+   
     # --- Training loop ---
+    logger.info("Beginning training loop...")
     for epoch in range(args.epochs):
         cosine_schedule(epoch = epoch, max_epochs= args.epochs, warmup_epochs= args.warmup_epochs)
         train_loss = one_epoch_train(model, train_loader, optimizer, device)
@@ -191,9 +194,22 @@ def main(
         
         if val_loss < best_val_loss:
             logger.success("New best model found!")
+            best_val_loss = val_loss
+            is_best = True
+            save_checkpoint(
+                state={
+                    "epoch": epoch + 1,
+                    "model_state_dict": model.state_dict(),
+                    "optimizer_state_dict": optimizer.state_dict(),
+                    "val_loss": val_loss,
+                },
+                is_best=is_best,
+                checkpoint_dir="./checkpoints",
+                filename="last.pth",
+            )   
         else:
             logger.info("No improvement this epoch.")
-
+            
 
 if __name__ == "__main__":
     main(

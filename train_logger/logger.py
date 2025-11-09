@@ -5,7 +5,7 @@ from datetime import datetime
 from termcolor import colored
 
 
-class Logger:
+class TrainLogger:
     """
     Custom training logger for experiments.
 
