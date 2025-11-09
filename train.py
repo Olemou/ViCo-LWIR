@@ -2,7 +2,7 @@ from clr_utils import *
 from torch.utils.data import DataLoader, DistributedSampler
 from ddp.env import setup_env, seed_everything
 from ddp.parse import parse_ddp_args, init_distributed_mode
-from utils.configs import ThermalAugConfig, RgbAugConfig
+from utils.data_aug_config import ThermalAugConfig, RgbAugConfig
 from utils.dataloader import get_datasets_and_loaders, ThermalAugmentation, RgbAugmentation
 from ddp.dist_util import is_dist, get_world_size, get_rank, wrap_model, get_model_device
 

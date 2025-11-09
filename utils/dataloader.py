@@ -5,7 +5,7 @@ from PIL import Image
 import requests
 from io import BytesIO
 from thermal import occlusion
-from configs import dataloadConfig, ThermalAugConfig, RgbAugConfig  
+from utils.data_aug_config import dataloadConfig, ThermalAugConfig, RgbAugConfig  
 
 
 # ------------------------------
