@@ -222,6 +222,10 @@ torchrun \
   train.py \
   --is_distributed \
   --batch_size 32
+  --root ./data \ 
+  --vit_variant base \ 
+  --temperatue 0.1 \ 
+  --num_epochs 50
 </code>
 </pre>
 </div>
