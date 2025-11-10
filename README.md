@@ -60,17 +60,17 @@ cd SpatialCL
 <code>
 
  ***1. Create virtual environment***
-     ***python -m venv venv***
+     python -m venv venv
 ***2. Activate the virtual environment***
 
 ***On Linux/macOS***
-***source venv/bin/activate***
+source venv/bin/activate
 
 ***On Windows (PowerShell)***
-***venv\Scripts\Activate.ps1***
+venv\Scripts\Activate.ps1
 
 ***On Windows (CMD)***
-***venv\Scripts\activate.bat***
+venv\Scripts\activate.bat
 </code>
 </pre>
 </div>
@@ -79,9 +79,8 @@ cd SpatialCL
 <div align="left" style="max-width:50%; margin-left:10%;">
 <pre>
 <code class="language-python">
-
-***pip install --upgrade pip ***
-*** pip install -r requirements.txt ***
+pip install --upgrade pip
+pip install -r requirements.txt
 </code>
 </pre>
 </div>
@@ -90,8 +89,7 @@ cd SpatialCL
 <div align="left" style="max-width:50%; margin-left:10%;">
 <pre>
 <code class="language-python">
-
-***pip install -e .***
+pip install -e .
 </code>
 </pre>
 </div>
@@ -102,23 +100,21 @@ cd SpatialCL
 <div align="left" style="margin-left:10%; height:30%;">
 <pre>
 <code>
-
-***pip install -i https://test.pypi.org/simple/ spatialcl***
+pip install -i https://test.pypi.org/simple/ spatialcl
 </code>
 </pre>
 </div>
-*After installing SpatialCL via ***pip***, we can leverage its comprehensive functionalities.*
+*After installing SpatialCL via ***pip***, you can leverage its comprehensive functionalities.*
 
-### 2️⃣ Thermal Augmentation
+- ### 2️⃣ Thermal Augmentation
 Let's suppose the image is loaded and readable.
 
 - <b>🧩 Occlusion </b>
 <div align="left" style="max-width:50%; margin-left:10%;">
 <pre>
 <code class="language-python">
-
-*** from Spatialcl.thermal import occlusion ***
- *** aug_img = occlusion(img=image,mask_width_ratio=0.6,mask_height_ratio=0.2,max_attempts=5,) ***
+     from Spatialcl.thermal import occlusion
+     aug_img = occlusion( img=image,mask_width_ratio=0.6,mask_height_ratio=0.2,max_attempts=5)
 </code>
 </pre>
 </div>
@@ -127,9 +123,8 @@ Let's suppose the image is loaded and readable.
 <div align="left" style="margin-left:10%;">
 <pre>
 <code class="language-python">
-
-***from Spatialcl.thermal import contrast***
-***aug_img = thermal_contrast(img = image, alpha = 0.8)***
+     from Spatialcl.thermal import contrast
+     aug_img = thermal_contrast(img = image, alpha = 0.8)
 </code>
 </pre>
 </div>
@@ -138,9 +133,8 @@ Let's suppose the image is loaded and readable.
 <div align="left" style="margin-left:10%;">
 <pre>
 <code class="language-python">
-
-  ***from Spatialcl.thermal import brightness_contrast***
-  ***aug_img = brightness_contrast(mg = image,brightness = 1, contrast = 0.6)***
+     from Spatialcl.thermal import brightness_contrast
+     aug_img = brightness_contrast(mg = image,brightness = 1, contrast = 0.6)
 </code>
 </pre>
 </div>
@@ -149,9 +143,8 @@ Let's suppose the image is loaded and readable.
 <div align="left" style="margin-left:10%;">
 <pre>
 <code class="language-python">
-
-***from Spatialcl.thermal import elastic***
-***aug_img = elastic_transform(img = image,alpha = 1, sigma = 0.8)***
+     from Spatialcl.thermal import elastic
+     aug_img = elastic_transform(img = image,alpha = 1, sigma = 0.8)
 </code>
 </pre>
 </div>
@@ -163,13 +156,12 @@ Let's suppose the image is loaded and readable.
  <div align="left" style="margin-left:10%;">
 <pre>
 <code class="language-python">
-
-***from Spatialcl.uncertainty import co_cluster_uncertainty***
-***z = torch.randn(4, 8)***
-***img_id = torch.tensor([0, 1, 2, 3]) (img_id: augmented views of same image ids)***
-***labels = torch.tensor([0, 1, 0, 1])***
-***prior_weight = 2***
-***uncertainy = co_cluster_uncertainty(z, labels, img_id)***
+from Spatialcl.uncertainty import co_cluster_uncertainty
+z = torch.randn(4, 8)
+img_id = torch.tensor([0, 1, 2, 3]) (img_id: augmented views of same image ids)
+labels = torch.tensor([0, 1, 0, 1])
+prior_weight = 2
+uncertainy = co_cluster_uncertainty(z, labels, img_id)
 </code>
 </pre>
 </div>
@@ -179,9 +171,10 @@ Let's suppose the image is loaded and readable.
  <div align="left" style="margin-left:10%;">
 <pre>
 <code class="language-python">
-
-*** from Spatialcl.uncertainty import compute_weights_from_uncertainty***
-***progressive_reweighting = compute_weights_from_uncertainty(uncertainty=uncertainty_matrix epoch=0 ,T = 100)***
+from Spatialcl.uncertainty import compute_weights_from_uncertainty
+progressive_reweighting = compute_weights_from_uncertainty( 
+     uncertainty=uncertainty_matrix, epoch=0 ,
+     T = 100)
 </code>
 </pre>
 </div>
@@ -201,7 +194,7 @@ output = build_uwcl(z=z, img_ids=img_id, labels=label, epoch=0, device="cpu")
 </div>
 
 ## Training & Evaluation 
-coming Soon !
+
 
 ## Results
 Coming soon
