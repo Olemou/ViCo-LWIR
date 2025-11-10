@@ -100,13 +100,15 @@ def one_epoch_train(
             img_ids.to(device),
         )
         
-
+        print("x1 shape:", x1.shape)
+        print("x2 shape:", x2.shape)
         images = torch.cat([x1, x2], dim=0)
         labels = torch.cat([labels, labels], dim=0)
         img_ids = torch.cat([img_ids, img_ids], dim=0)
 
         optimizer.zero_grad()
         z = model(images)
+        print("z shape:", z.shape)
 
         loss = build_uwcl(
             z=z,
@@ -215,11 +217,13 @@ def main():
             epoch=epoch, optimizer=optimizer,
             max_epochs=args.num_epochs, warmup_epochs=args.warmup_epochs
         )
+        logger.info(f"Epoch {epoch} learning rates: {[group['lr'] for group in optimizer.param_groups]}")
         train_loss = one_epoch_train(model, train_loader, optimizer, device, epoch,args)
         val_loss = one_eval_epoch(model, val_loader, device, epoch,args)
-
-        logger.metric(epoch, train_loss, val_loss, optimizer)
+        
         logger.info(f"Epoch {epoch}: train_loss={train_loss}, val_loss={val_loss}")
+        logger.metric(epoch, train_loss, val_loss, optimizer)
+       
 
         if val_loss < best_val_loss:
             logger.success("New best model found!")
