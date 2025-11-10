@@ -60,17 +60,17 @@ cd SpatialCL
 <code>
 
  ***1. Create virtual environment***
-     python -m venv venv
+     ***python -m venv venv***
 ***2. Activate the virtual environment***
 
 ***On Linux/macOS***
-source venv/bin/activate
+***source venv/bin/activate***
 
 ***On Windows (PowerShell)***
-venv\Scripts\Activate.ps1
+***venv\Scripts\Activate.ps1***
 
 ***On Windows (CMD)***
-venv\Scripts\activate.bat
+***venv\Scripts\activate.bat***
 </code>
 </pre>
 </div>
@@ -91,7 +91,7 @@ venv\Scripts\activate.bat
 <pre>
 <code class="language-python">
 
-***pip install -e . ***
+***pip install -e .***
 </code>
 </pre>
 </div>
@@ -103,7 +103,7 @@ venv\Scripts\activate.bat
 <pre>
 <code>
 
-***pip install -i https://test.pypi.org/simple/ spatialcl ***
+***pip install -i https://test.pypi.org/simple/ spatialcl***
 </code>
 </pre>
 </div>
@@ -128,8 +128,8 @@ Let's suppose the image is loaded and readable.
 <pre>
 <code class="language-python">
 
-*** from Spatialcl.thermal import contrast ***
-*** aug_img = thermal_contrast(img = image, alpha = 0.8) ***
+***from Spatialcl.thermal import contrast***
+***aug_img = thermal_contrast(img = image, alpha = 0.8)***
 </code>
 </pre>
 </div>
@@ -139,8 +139,8 @@ Let's suppose the image is loaded and readable.
 <pre>
 <code class="language-python">
 
-  *** from Spatialcl.thermal import brightness_contrast ***
-  *** aug_img = brightness_contrast(mg = image,brightness = 1, contrast = 0.6) ***
+  ***from Spatialcl.thermal import brightness_contrast***
+  ***aug_img = brightness_contrast(mg = image,brightness = 1, contrast = 0.6)***
 </code>
 </pre>
 </div>
@@ -150,8 +150,8 @@ Let's suppose the image is loaded and readable.
 <pre>
 <code class="language-python">
 
-*** from Spatialcl.thermal import elastic ***
-*** aug_img = elastic_transform(img = image,alpha = 1, sigma = 0.8) ***
+***from Spatialcl.thermal import elastic***
+***aug_img = elastic_transform(img = image,alpha = 1, sigma = 0.8)***
 </code>
 </pre>
 </div>
@@ -168,7 +168,7 @@ Let's suppose the image is loaded and readable.
 ***z = torch.randn(4, 8)***
 ***img_id = torch.tensor([0, 1, 2, 3]) (img_id: augmented views of same image ids)***
 ***labels = torch.tensor([0, 1, 0, 1])***
-***prior_weight = 2 ***
+***prior_weight = 2***
 ***uncertainy = co_cluster_uncertainty(z, labels, img_id)***
 </code>
 </pre>
