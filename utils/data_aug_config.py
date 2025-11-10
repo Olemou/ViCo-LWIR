@@ -46,6 +46,6 @@ class RgbAugConfig:
 
 @dataclass
 class dataloadConfig:
-    train_ratio: float = 0.8
+    train_ratio: float = 0.3
     val_ratio: float = 0.1
     seed: int = 42

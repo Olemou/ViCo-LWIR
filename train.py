@@ -5,8 +5,6 @@ from ddp.parse import parse_ddp_args, init_distributed_mode
 from utils.data_aug_config import ThermalAugConfig, RgbAugConfig
 from utils.dataloader import get_datasets_and_loaders, ThermalAugmentation, RgbAugmentation
 from ddp.dist_util import is_dist, get_world_size, get_rank, wrap_model, get_model_device
-
-
 from train_logger.logger import TrainLogger
 from model.vit import VisionTransformer
 from model.load_weight import load_pretrained_vit_weights
@@ -87,12 +85,14 @@ def one_epoch_train(
     optimizer: torch.optim.Optimizer,
     device: torch.device,
     epoch: int,
+    logger : TrainLogger,
     args
 ):
     """One epoch training loop."""
     model.train()
     total_loss = 0.0
-    for (x1, x2), labels, img_ids in train_loader:
+    for step, batch in enumerate(train_loader):
+        (x1, x2), labels, img_ids = batch
         x1, x2, labels, img_ids = (
             x1.to(device),
             x2.to(device),
@@ -100,16 +100,13 @@ def one_epoch_train(
             img_ids.to(device),
         )
         
-        print("x1 shape:", x1.shape)
-        print("x2 shape:", x2.shape)
         images = torch.cat([x1, x2], dim=0)
         labels = torch.cat([labels, labels], dim=0)
         img_ids = torch.cat([img_ids, img_ids], dim=0)
 
         optimizer.zero_grad()
         z = model(images)
-        print("z shape:", z.shape)
-
+       
         loss = build_uwcl(
             z=z,
             labels=labels,
@@ -123,6 +120,11 @@ def one_epoch_train(
         optimizer.step()
 
         total_loss += loss.item() * x1.size(0)
+        
+        if step % 10 == 0:
+            logger.info(
+                f"Epoch [{epoch}] Step [{step}/{len(train_loader)}]: Loss = {loss.item():.4f}"
+            )
 
     avg_loss = total_loss / len(train_loader.dataset)
     return avg_loss
@@ -134,13 +136,15 @@ def one_eval_epoch(
     val_loader: DataLoader,
     device: torch.device,
     epoch: int,
+    logger : TrainLogger,
     args
 ):
     """One epoch evaluation loop."""
     model.eval()
     total_loss = 0.0
     with torch.no_grad():
-        for (x1, x2), labels, img_ids in val_loader:
+        for step, batch  in enumerate(val_loader):
+            (x1, x2), labels, img_ids = batch
             x1, x2, labels, img_ids = (
                 x1.to(device),
                 x2.to(device),
@@ -163,6 +167,11 @@ def one_eval_epoch(
                 T=args.num_epochs,
             )
             total_loss += loss.item() * x1.size(0)
+            if step % 10 == 0:
+                logger.info(
+                    f"[Eval] Epoch [{epoch}] Step [{step}/{len(val_loader)}]: Loss = {loss.item():.4f}"
+                )
+                
 
     avg_loss = total_loss / len(val_loader.dataset)
     return avg_loss
@@ -217,11 +226,9 @@ def main():
             epoch=epoch, optimizer=optimizer,
             max_epochs=args.num_epochs, warmup_epochs=args.warmup_epochs
         )
-        logger.info(f"Epoch {epoch} learning rates: {[group['lr'] for group in optimizer.param_groups]}")
+       
         train_loss = one_epoch_train(model, train_loader, optimizer, device, epoch,args)
         val_loss = one_eval_epoch(model, val_loader, device, epoch,args)
-        
-        logger.info(f"Epoch {epoch}: train_loss={train_loss}, val_loss={val_loss}")
         logger.metric(epoch, train_loss, val_loss, optimizer)
        
 
