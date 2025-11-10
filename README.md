@@ -41,16 +41,9 @@ DISCO (Detection of Indoor Spills with Contrastive learning) addresses one of th
 
 ## 📦Installation
 
-- ***PyPI***
-<div align="left" style="margin-left:10%;">
-<pre>
-<code class="language-python">
-pip install -i https://test.pypi.org/simple/ spatialcl==0.3.4
-</code>
-</pre>
-</div>
+# 🅐 local environment setup
 
-- <b>Clone the repository</b>
+- ***1️⃣ ***<b>Clone the repository</b>
 <div align="left" style="margin-left:10%; height:30%;">
 <pre>
 <code>
@@ -59,36 +52,44 @@ cd SpatialCL
 </code>
 </pre>
 </div>
-
 <!-- Setup Python virtual environment -->
-<b>Setup a Python Virtual Environment (optional):</b>
+
+- ***2️⃣*** <b>Setup a Python Virtual Environment (optional):</b>
 <div align="left" style="margin-left:10%;">
 <pre>
 <code>
 
- # 1. Create virtual environment
+ ***1. Create virtual environment***
      python -m venv venv
-# 2. Activate the virtual environment
+***2. Activate the virtual environment***
 
-# On Linux/macOS
+***On Linux/macOS***
 source venv/bin/activate
 
-# On Windows (PowerShell)
+***On Windows (PowerShell)***
 venv\Scripts\Activate.ps1
 
-# On Windows (CMD)
+***On Windows (CMD)***
 venv\Scripts\activate.bat
 </code>
 </pre>
 </div>
 
-
- - ***Install dependencies:***
+ - ***3️⃣***<b>Install dependencie:</b>
 <div align="left" style="max-width:50%; margin-left:10%;">
 <pre>
 <code class="language-python">
 pip install --upgrade pip
 pip install -r requirements.txt
+</code>
+</pre>
+</div>
+
+ - ***4️⃣***<b>Install local package in editable mode:</b>
+<div align="left" style="max-width:50%; margin-left:10%;">
+<pre>
+<code class="language-python">
+pip install -e .
 </code>
 </pre>
 </div>
