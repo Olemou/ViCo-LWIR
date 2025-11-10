@@ -246,3 +246,12 @@ torchrun \
   </tr>
 </table>
 
+# 🅔 Visualization
+### 1️⃣ <b> Original vs Attention-Map </b>
+<p align="center">
+  <img src="assets/hot_water.png" alt="Image 1" width="250"/>
+  <img src="assets/hot_last_block.png" alt="Image 2" width="250"/>
+  <img src="assets/hot_attention_rollout.png" alt="Image 3" width="250"/>
+</p>
+
+
