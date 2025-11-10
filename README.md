@@ -234,7 +234,6 @@ torchrun \
   <tr>
     <!-- Column 1 -->
     <td>
-      <h3>Model</h3>
       <p>Vit-base customize</p>
     </td>
     <td style="text-align: center;">
