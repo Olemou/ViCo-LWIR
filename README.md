@@ -124,7 +124,7 @@ Let's suppose the image is loaded and readable.
 <pre>
 <code class="language-python">
      from Spatialcl.thermal import contrast
-     aug_img = thermal_contrast(img = image, alpha = 0.8)
+     aug_img = contrast(img = image, alpha = 0.8)
 </code>
 </pre>
 </div>
@@ -144,7 +144,7 @@ Let's suppose the image is loaded and readable.
 <pre>
 <code class="language-python">
      from Spatialcl.thermal import elastic
-     aug_img = elastic_transform(img = image,alpha = 1, sigma = 0.8)
+     aug_img = elastic(img = image,alpha = 1, sigma = 0.8)
 </code>
 </pre>
 </div>
@@ -193,8 +193,37 @@ output = build_uwcl(z=z, img_ids=img_id, labels=label, epoch=0, device="cpu")
 </pre>
 </div>
 
-## Training & Evaluation 
+## Training & Evalidation 
 
+### 🎯 Single-GPU (Non-Distributed) Training
+***root: stands for your data folder path*** 
+<div align="left" style="margin-left:10%;">
+<pre>
+<code class="language-python">
 
+***example***
+python train.py --batch_size 32 --num_workers 4 --root ./data --vit_variant base --temperatue 0.1 --num_epochs 50
+</code>
+</pre>
+</div>
+
+### 🎯 Distributed Training One Node
+***root: stands for your data folder path*** 
+<div align="left" style="margin-left:10%;">
+<pre>
+<code class="language-python">
+
+***example***
+torchrun \
+ --nnodes=1 \
+  --nproc_per_node= 1 \
+  --master_addr="127.0.0.1" \
+  --master_port=29500 \
+  train.py \
+  --is_distributed \
+  --batch_size 32
+</code>
+</pre>
+</div>
 ## Results
 Coming soon
