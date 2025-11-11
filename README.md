@@ -100,7 +100,7 @@ pip install -e .
 <div align="left" style="margin-left:10%; height:30%;">
 <pre>
 <code>
-pip install -i https://test.pypi.org/simple/ spatialcl
+pip install spatialcl
 </code>
 </pre>
 </div>
