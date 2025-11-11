@@ -56,7 +56,7 @@ class ImageLabelDTO:
             # Single view per sample
             self._N = self._B
         else:  # dim == 3
-            self._B, self.V, self._D = z.shape
+            self._B, self._V, self._D = z.shape
             self._N = self._B * self._V
 
         return self

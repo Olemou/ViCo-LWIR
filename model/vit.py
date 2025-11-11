@@ -140,7 +140,7 @@ class VisionTransformer(nn.Module):
         drop_rate=0.1,
         qkv_bias=True,
         use_checkpoint=True,
-        head_hidden_dim=128,
+        head_hidden_dim=None
     ):
         super().__init__()
         assert (
