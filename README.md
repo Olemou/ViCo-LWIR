@@ -279,11 +279,11 @@ torchrun \
   
   ### 1️⃣ <b>Anomaly Detection on Wooden Materials</b>
   - 🔸 ***t-SNE wooden material***
-  - <div align="center" style="margin-top: 20px; margin-bottom: 20px;">
-  <h2>Wood</h2>
+  <div align="center" style="margin-top: 20px; margin-bottom: 20px;">
+  <h2>t-SNE wooden material</h2>
   <p style="font-size: 16px; color: gray;">
   </p>
-  <img src="assets/anomaly/wood/tsne_wood.png" alt="SpatialCL Architecture" width="850"/>
+  <img src="assets/anomaly/wood/tsne_wood.png" alt="SpatialCL Architecture" width="300"/>
 </div>
 
   
