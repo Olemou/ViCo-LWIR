@@ -276,7 +276,7 @@ torchrun \
 ## key  features
 - ✅ Handle  **class level variability** for downstream tasks
 - ✅ Handles **class imbalance**
-- ✅ <h3>✅ Dataset</h3>
+- <h3>✅ Dataset</h3>
     <p>
       <a href="https://www.mvtec.com/company/research/datasets/mvtec-ad/downloads" target="_blank" style="text-decoration:none;">
         <span style="
