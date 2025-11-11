@@ -237,7 +237,7 @@ torchrun \
       <h3 align="center">🧠 Pretrained Customized ViT-Base</h3>
     </td>
     <td style="text-align: center;">
-      <a href="https://example.com/path/to/your_model.pth" download>
+      <a href="https://github.com/Olemou/SpatialCL/releases/tag/SpatialCl_(DISCO)" download>
         <button style="padding: 10px 20px; font-size: 16px; cursor: pointer;">
           Download Weights
         </button>
