@@ -80,7 +80,7 @@ venv\Scripts\activate.bat
 <pre>
 <code class="language-python">
 pip install --upgrade pip
-pip install -r requirements.txt
+pip install -r requirement.txt
 </code>
 </pre>
 </div>
