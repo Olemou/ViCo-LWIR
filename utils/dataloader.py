@@ -62,17 +62,20 @@ class ConDataset(Dataset):
         if self.transform:
             xi = self.transform(img.unsqueeze(0))  # [1,C,H,W]
             xj = self.transform(img.unsqueeze(0))
+            print( f"Transformed shapes: xi {xi.shape}, xj {xj.shape}" )
             xi = xi.squeeze(0)  # return to [C,H,W]
             xj = xj.squeeze(0)
+            print( f"Squeezed shapes: xi {xi.shape}, xj {xj.shape}" )
         else:
             xi = img
             xj = img
 
         # Move to device
-        xi = xi.to(self.device, non_blocking=True)
-        xj = xj.to(self.device, non_blocking=True)
-        label = torch.tensor(label, device=self.device, dtype=torch.long, non_blocking=True)
-        idx = torch.tensor(idx, device=self.device, dtype=torch.long, non_blocking=True)
+        xi = self.transform(img).to(self.device, non_blocking=True)
+        xj = self.transform(img).to(self.device, non_blocking=True)
+        label = torch.tensor(label, dtype=torch.long).to(self.device, non_blocking=True)
+        idx = torch.tensor(idx, dtype=torch.long).to(self.device, non_blocking=True)
+
 
         return (xi, xj), label, idx
 
@@ -233,16 +236,7 @@ class ThermalAugmentation:
             ),
 
             # Thermal occlusion  
-             K.AugmentationSequential(
-                FunctionWrapper(
-                    occlusion,
-                    mask_width_ratio=cfg.mask_width_ratio,
-                    mask_height_ratio=cfg.mask_height_ratio,
-                    max_attempts=cfg.max_attempts,
-                ),
-                random_apply=True,
-                p=cfg.occlusion_prob
-            ),
+             
 
             # Flips
             K.RandomHorizontalFlip(p=cfg.horizontal_flip_prob),

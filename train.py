@@ -213,7 +213,7 @@ def main():
     """Main training setup for distributed or single-node training."""
     # --- DataLoaders & DDP setup ---
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    train_loader, val_loader, _ = param_dataloader_init(args)
+    train_loader, val_loader, _ = param_dataloader_init(args, device)
 
     logger.info("Starting training...")
     # --- Model, criterion, optimizer ---
