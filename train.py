@@ -73,7 +73,8 @@ def param_dataloader_init(args, device, logger: TrainLogger = None):
         shuffle=(sampler_train is None),
         sampler=sampler_train,
         num_workers=args.num_workers,
-        persistent_workers = True
+        persistent_workers = True,
+        pin_memory=True,
     )
 
     val_loader = DataLoader(
@@ -82,7 +83,8 @@ def param_dataloader_init(args, device, logger: TrainLogger = None):
         shuffle=False,
         sampler=sampler_val,
         num_workers=args.num_workers,
-        persistent_workers = True
+        persistent_workers = True,
+        pin_memory=True
     )
 
     test_loader = DataLoader(
@@ -111,17 +113,17 @@ def one_epoch_train(
     total_loss = 0.0
     for step, batch in enumerate(train_loader):
         (x1, x2), labels, img_ids = batch
-        '''x1, x2, labels, img_ids = (
-            x1.to(device),
-            x2.to(device),
-            labels.to(device),
-            img_ids.to(device),
-        )'''
+        x1, x2, labels, img_ids = (
+            x1.to(device, non_blocking=True),
+            x2.to(device, non_blocking=True),
+            labels.to(device, non_blocking=True),
+            img_ids.to(device, non_blocking=True),
+        )
 
         images = torch.cat([x1, x2], dim=0)
         labels = torch.cat([labels, labels], dim=0)
         img_ids = torch.cat([img_ids, img_ids], dim=0)
-        logger.debug( f"Batch shapes: images {images.shape}, labels {labels.shape}, img_ids {img_ids.shape}" )
+        
         optimizer.zero_grad()
         z = model(images)
 
@@ -134,6 +136,7 @@ def one_epoch_train(
             temperature=args.temperature,
             T=args.num_epochs,
         )
+        logger.info(f"Loss at step {step}: {loss.item():.4f}")
         loss.backward()
         optimizer.step()
 
@@ -163,12 +166,12 @@ def one_eval_epoch(
     with torch.no_grad():
         for step, batch in enumerate(val_loader):
             (x1, x2), labels, img_ids = batch
-            '''x1, x2, labels, img_ids = (
-                x1.to(device),
-                x2.to(device),
-                labels.to(device),
-                img_ids.to(device),
-            )'''
+            x1, x2, labels, img_ids = (
+            x1.to(device, non_blocking=True),
+            x2.to(device, non_blocking=True),
+            labels.to(device, non_blocking=True),
+            img_ids.to(device, non_blocking=True),
+        )
 
             images = torch.cat([x1, x2], dim=0)
             labels = torch.cat([labels, labels], dim=0)

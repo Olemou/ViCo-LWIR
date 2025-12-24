@@ -68,10 +68,8 @@ class ConDataset(Dataset):
             xj = img
 
         # Move to device
-        xi = xi.to(self.device, non_blocking=True)
-        xj = xj.to(self.device, non_blocking=True)
-        label = torch.tensor(label, dtype=torch.long).to(self.device, non_blocking=True)
-        idx = torch.tensor(idx, dtype=torch.long).to(self.device, non_blocking=True)
+        label = torch.tensor(label, dtype=torch.long)
+        idx = torch.tensor(idx, dtype=torch.long)
 
         return (xi, xj), label, idx
 
