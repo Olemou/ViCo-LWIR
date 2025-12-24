@@ -5,9 +5,9 @@ import logging
 def save_checkpoint(state, is_best, checkpoint_dir="./checkpoints", filename="last.pth"):
     os.makedirs(checkpoint_dir, exist_ok=True)
     path = os.path.join(checkpoint_dir, filename)
-    torch.save(state, path)
+   # torch.save(state, path)
     if is_best:
-        best_path = os.path.join(checkpoint_dir, "best_model.pth")
+        best_path = os.path.join(checkpoint_dir, "vit_best_model.pth")
         torch.save(state, best_path)
         logging.info(f"✅ Saved new best model to {best_path}")
     else:

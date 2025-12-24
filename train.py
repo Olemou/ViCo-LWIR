@@ -73,6 +73,7 @@ def param_dataloader_init(args, logger: TrainLogger = None):
         sampler=sampler_train,
         num_workers=args.num_workers,
         pin_memory=True,
+        persistent_workers = True
     )
 
     val_loader = DataLoader(
@@ -82,6 +83,7 @@ def param_dataloader_init(args, logger: TrainLogger = None):
         sampler=sampler_val,
         num_workers=args.num_workers,
         pin_memory=True,
+        persistent_workers = True
     )
 
     test_loader = DataLoader(
@@ -91,6 +93,7 @@ def param_dataloader_init(args, logger: TrainLogger = None):
         sampler=sampler_test,
         num_workers=args.num_workers,
         pin_memory=True,
+        persistent_workers = True
     )
     return train_loader, val_loader, test_loader
 
