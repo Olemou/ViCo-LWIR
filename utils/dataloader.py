@@ -6,6 +6,7 @@ import requests
 import numpy as np
 from io import BytesIO
 from torchvision import io as tv_io
+import torch.nn as nn
 from thermal import occlusion
 import kornia.augmentation as K
 from utils.data_aug_config import dataloadConfig, ThermalAugConfig, RgbAugConfig
@@ -31,19 +32,17 @@ def rgb_loader(path_or_url):
         # Load from URL
         response = requests.get(path_or_url, timeout=10)
         img = Image.open(BytesIO(response.content)).convert("RGB")
-        img = torch.tensor(np.array(img), dtype=torch.float32).permute(2,0,1) / 255.0
     else:
         # Load from local path using torchvision (faster)
-        img = tv_io.read_image(path_or_url).float() / 255.0  # [C,H,W], float32 [0,1]
-        if img.shape[0] == 1:  # grayscale fallback
-            img = img.repeat(3,1,1)
+        img = Image.open(path_or_url).convert("RGB")
+        
     return img
 
 # ------------------------------
 #  Contrastive Dataset
 # ------------------------------
 class ConDataset(Dataset):
-    def __init__(self, base_dataset,device, transform=None):
+    def __init__(self, base_dataset, transform=None, device='cuda'):
         self.base_dataset = base_dataset
         self.transform = transform
         self.device = device
@@ -53,13 +52,29 @@ class ConDataset(Dataset):
 
     def __getitem__(self, idx):
         img, label = self.base_dataset[idx]
-        img = img.to(self.device, non_blocking=True)  # [C,H,W], float32
-        label = torch.tensor(label, device=self.device, dtype=torch.long)
-        idx = torch.tensor(idx, device=self.device, dtype=torch.long)
-        xi = self.transform(img) 
-        xj = self.transform(img) 
-        return (xi, xj), label, idx
 
+        # Convert PIL to tensor if needed
+        if isinstance(img, Image.Image):
+            img = torch.from_numpy(np.array(img)).float() / 255.0  # [H,W,C]
+            img = img.permute(2, 0, 1)  # [C,H,W]
+
+        # Apply GPU Kornia transform
+        if self.transform:
+            xi = self.transform(img.unsqueeze(0))  # [1,C,H,W]
+            xj = self.transform(img.unsqueeze(0))
+            xi = xi.squeeze(0)  # return to [C,H,W]
+            xj = xj.squeeze(0)
+        else:
+            xi = img
+            xj = img
+
+        # Move to device
+        xi = xi.to(self.device, non_blocking=True)
+        xj = xj.to(self.device, non_blocking=True)
+        label = torch.tensor(label, device=self.device, dtype=torch.long, non_blocking=True)
+        idx = torch.tensor(idx, device=self.device, dtype=torch.long, non_blocking=True)
+
+        return (xi, xj), label, idx
 
 # ------------------------------
 # Create datasets and dataloaders
@@ -178,6 +193,16 @@ def get_datasets_and_loaders(
     def __call__(self, img):
         return self.transform(img)
 '''
+# Wrapper
+class FunctionWrapper(nn.Module):
+    def __init__(self, func, **kwargs):
+        super().__init__()
+        self.func = func
+        self.kwargs = kwargs
+
+    def forward(self, x):
+        return self.func(x, **self.kwargs)
+    
 class ThermalAugmentation:
     def __init__(self, cfg):
         self.cfg = cfg
@@ -207,18 +232,17 @@ class ThermalAugmentation:
                 random_apply=True,
             ),
 
-            # Thermal occlusion
-            K.RandomApply(
-                K.Lambda(
-                    lambda img: occlusion(
-                        img,
-                        mask_width_ratio=cfg.mask_width_ratio,
-                        mask_height_ratio=cfg.mask_height_ratio,
-                        max_attempts=cfg.max_attempts,
-                    )
+            # Thermal occlusion  
+             K.AugmentationSequential(
+                FunctionWrapper(
+                    occlusion,
+                    mask_width_ratio=cfg.mask_width_ratio,
+                    mask_height_ratio=cfg.mask_height_ratio,
+                    max_attempts=cfg.max_attempts,
                 ),
-                p=cfg.occlusion_prob,
-            ),  
+                random_apply=True,
+                p=cfg.occlusion_prob
+            ),
 
             # Flips
             K.RandomHorizontalFlip(p=cfg.horizontal_flip_prob),

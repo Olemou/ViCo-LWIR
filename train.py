@@ -1,5 +1,6 @@
 from clr_utils import *
 import json
+import torch.multiprocessing as mp
 from torch.utils.data import DataLoader, DistributedSampler
 from ddp.env import setup_env, seed_everything
 from ddp.parse import parse_ddp_args, init_distributed_mode
@@ -34,7 +35,7 @@ def param_dataloader_init(args, device, logger: TrainLogger = None):
     if args.modality.get("rgb", False):
         transform = RgbAugmentation(RgbAugConfig()).transform
     elif args.modality.get("thermal", False):
-        transform = ThermalAugmentation(ThermalAugConfig()).transform.transform.to(device)
+        transform = ThermalAugmentation(ThermalAugConfig()).transform.to(device)
     else:
         raise ValueError(
             "Please specify at least one valid modality: 'rgb' or 'thermal'."
@@ -72,7 +73,6 @@ def param_dataloader_init(args, device, logger: TrainLogger = None):
         shuffle=(sampler_train is None),
         sampler=sampler_train,
         num_workers=args.num_workers,
-        pin_memory=True,
         persistent_workers = True
     )
 
@@ -82,7 +82,6 @@ def param_dataloader_init(args, device, logger: TrainLogger = None):
         shuffle=False,
         sampler=sampler_val,
         num_workers=args.num_workers,
-        pin_memory=True,
         persistent_workers = True
     )
 
@@ -92,7 +91,7 @@ def param_dataloader_init(args, device, logger: TrainLogger = None):
         shuffle=False,
         sampler=sampler_test,
         num_workers=args.num_workers,
-        pin_memory=True,
+       
         persistent_workers = True
     )
     return train_loader, val_loader, test_loader
@@ -269,4 +268,5 @@ def main():
 
 
 if __name__ == "__main__":
+    mp.set_start_method('spawn', force=True)
     main()
