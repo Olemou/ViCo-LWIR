@@ -3,76 +3,39 @@ from torch.utils.data import Dataset, random_split
 from torchvision import datasets, transforms
 from PIL import Image
 import requests
-import numpy as np
 from io import BytesIO
-from torchvision import io as tv_io
-import torch.nn as nn
 from thermal import occlusion
-import kornia.augmentation as K
 from utils.data_aug_config import dataloadConfig, ThermalAugConfig, RgbAugConfig
 
 
 # ------------------------------
 # RGB image loader (local or URL)
 # ------------------------------
-'''def rgb_loader(path_or_url):
+def rgb_loader(path_or_url):
     if path_or_url.startswith("http"):
         response = requests.get(path_or_url)
         img = Image.open(BytesIO(response.content)).convert("RGB")
     else:
         img = Image.open(path_or_url).convert("RGB")
-    return img'''
-
-def rgb_loader(path_or_url):
-    """
-    Load an RGB image from a local path or URL as a torch.Tensor.
-    Output: float32 tensor [C,H,W] in [0,1]
-    """
-    if path_or_url.startswith("http"):
-        # Load from URL
-        response = requests.get(path_or_url, timeout=10)
-        img = Image.open(BytesIO(response.content)).convert("RGB")
-    else:
-        # Load from local path using torchvision (faster)
-        img = Image.open(path_or_url).convert("RGB")
-        
     return img
+
 
 # ------------------------------
 #  Contrastive Dataset
 # ------------------------------
 class ConDataset(Dataset):
-    def __init__(self, base_dataset, transform=None, device='cuda'):
+    def __init__(self, base_dataset, transform=None):
         self.base_dataset = base_dataset
         self.transform = transform
-        self.device = device
 
     def __len__(self):
         return len(self.base_dataset)
+
     def __getitem__(self, idx):
         img, label = self.base_dataset[idx]
-
-        # Convert PIL to tensor if needed
-        if isinstance(img, Image.Image):
-            img = torch.from_numpy(np.array(img)).float() / 255.0  # [H,W,C]
-            img = img.permute(2, 0, 1)  # [C,H,W]
-
-        # Apply Kornia transform (expects batch)
-        if self.transform:
-            xi = self.transform(img.unsqueeze(0))  # [1,C,H,W]
-            xj = self.transform(img.unsqueeze(0))
-            xi = xi.squeeze(0)  # [C,H,W]
-            xj = xj.squeeze(0)
-        else:
-            xi = img
-            xj = img
-
-        # Move to device
-        label = torch.tensor(label, dtype=torch.long)
-        idx = torch.tensor(idx, dtype=torch.long)
-
+        xi = self.transform(img) if self.transform else transforms.ToTensor()(img)
+        xj = self.transform(img) if self.transform else transforms.ToTensor()(img)
         return (xi, xj), label, idx
-
 
 
 # ------------------------------
@@ -80,7 +43,6 @@ class ConDataset(Dataset):
 # ------------------------------
 def get_datasets_and_loaders(
     root=None,
-    device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu'),
     dataset_class=None,
     transform=None,
     train_ratio=dataloadConfig().train_ratio,
@@ -111,9 +73,9 @@ def get_datasets_and_loaders(
     )
 
     # Wrap in SupConDataset
-    train_dataset = ConDataset(train_dataset, transform=transform,device = device)
-    val_dataset = ConDataset(val_dataset, transform=transform,device = device)
-    test_dataset = ConDataset(test_dataset, transform=transform,device = device)
+    train_dataset = ConDataset(train_dataset, transform=transform)
+    val_dataset = ConDataset(val_dataset, transform=transform)
+    test_dataset = ConDataset(test_dataset, transform=transform)
 
     return train_dataset, val_dataset, test_dataset
 
@@ -121,7 +83,7 @@ def get_datasets_and_loaders(
 # -----------------------------------------------------------------------------------------------
 #  Thermal modality
 # -----------------------------------------------------------------------------------------------
-'''class ThermalAugmentation:
+class ThermalAugmentation:
     def __init__(self, cfg: ThermalAugConfig):
         self.cfg = cfg
         self.transform = self.build_transform()
@@ -186,65 +148,9 @@ def get_datasets_and_loaders(
                 transforms.Normalize(mean=self.cfg.mean, std=self.cfg.std),
             ]
         )
-        
-        
 
     def __call__(self, img):
         return self.transform(img)
-'''
-# Wrapper
-class FunctionWrapper(nn.Module):
-    def __init__(self, func, **kwargs):
-        super().__init__()
-        self.func = func
-        self.kwargs = kwargs
-
-    def forward(self, x):
-        return self.func(x, **self.kwargs)
-    
-class ThermalAugmentation:
-    def __init__(self, cfg):
-        self.cfg = cfg
-        self.transform = K.AugmentationSequential(
-            # Resize
-            K.Resize((cfg.image_size, cfg.image_size)),
-
-            # Geometric transforms (random order)
-            K.AugmentationSequential(
-                K.RandomAffine(
-                    degrees=cfg.degrees,
-                    translate=cfg.translate,
-                    scale=cfg.scale,
-                    shear=cfg.shear,
-                    p=cfg.random_affine_prob,
-                ),
-                K.RandomRotation(
-                    degrees=cfg.random_rotation_degrees,
-                    p=cfg.random_rotation_degrees_prob,
-                ),
-                K.RandomResizedCrop(
-                    size=(cfg.image_size, cfg.image_size),
-                    scale=cfg.resized_crop_scale,
-                    ratio=cfg.resized_crop_ratio,
-                    p=cfg.random_crop_prob,
-                ),
-                random_apply=True,
-            ),
-
-            # Thermal occlusion  
-             
-
-            # Flips
-            K.RandomHorizontalFlip(p=cfg.horizontal_flip_prob),
-            K.RandomVerticalFlip(p=cfg.vertical_flip_prob),
-
-            # Normalize
-            K.Normalize(mean=cfg.mean, std=cfg.std),
-        )
-
-    def __call__(self, img):
-        out = self.transform(img)
-        return out
 
 
 # ------------------------------------------------------------------------------------------

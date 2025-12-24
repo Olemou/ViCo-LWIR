@@ -1,6 +1,5 @@
 from clr_utils import *
 import json
-import torch.multiprocessing as mp
 from torch.utils.data import DataLoader, DistributedSampler
 from ddp.env import setup_env, seed_everything
 from ddp.parse import parse_ddp_args, init_distributed_mode
@@ -15,6 +14,7 @@ from ddp.dist_util import (
     get_world_size,
     get_rank,
     wrap_model,
+    
 )
 from train_logger.logger import TrainLogger
 from model.vit import VisionTransformer
@@ -24,7 +24,7 @@ from spatialcl.uwcl import build_uwcl
 from check_point.save_point import save_checkpoint
 
 
-def param_dataloader_init(args, device, logger: TrainLogger = None):
+def param_dataloader_init(args, logger: TrainLogger = None):
     """Main training setup for distributed or single-node training."""
 
     # --- Select transformation based on modality ---
@@ -35,7 +35,7 @@ def param_dataloader_init(args, device, logger: TrainLogger = None):
     if args.modality.get("rgb", False):
         transform = RgbAugmentation(RgbAugConfig()).transform
     elif args.modality.get("thermal", False):
-        transform = ThermalAugmentation(ThermalAugConfig()).transform.to(device)
+        transform = ThermalAugmentation(ThermalAugConfig()).transform
     else:
         raise ValueError(
             "Please specify at least one valid modality: 'rgb' or 'thermal'."
@@ -45,7 +45,6 @@ def param_dataloader_init(args, device, logger: TrainLogger = None):
 
     train_dataset, val_dataset, test_dataset = get_datasets_and_loaders(
         root=args.root,
-        device= device,
         dataset_class= None if args.dataset_class is [None, "None"] else eval(args.dataset_class),
         transform=transform,
     )
@@ -73,8 +72,8 @@ def param_dataloader_init(args, device, logger: TrainLogger = None):
         shuffle=(sampler_train is None),
         sampler=sampler_train,
         num_workers=args.num_workers,
-        persistent_workers = True,
         pin_memory=True,
+        persistent_workers = True
     )
 
     val_loader = DataLoader(
@@ -83,8 +82,8 @@ def param_dataloader_init(args, device, logger: TrainLogger = None):
         shuffle=False,
         sampler=sampler_val,
         num_workers=args.num_workers,
-        persistent_workers = True,
-        pin_memory=True
+        pin_memory=True,
+        persistent_workers = True
     )
 
     test_loader = DataLoader(
@@ -93,7 +92,7 @@ def param_dataloader_init(args, device, logger: TrainLogger = None):
         shuffle=False,
         sampler=sampler_test,
         num_workers=args.num_workers,
-       
+        pin_memory=True,
         persistent_workers = True
     )
     return train_loader, val_loader, test_loader
@@ -114,16 +113,16 @@ def one_epoch_train(
     for step, batch in enumerate(train_loader):
         (x1, x2), labels, img_ids = batch
         x1, x2, labels, img_ids = (
-            x1.to(device, non_blocking=True),
-            x2.to(device, non_blocking=True),
-            labels.to(device, non_blocking=True),
-            img_ids.to(device, non_blocking=True),
+            x1.to(device ,non_blocking=True),
+            x2.to(device,non_blocking=True),
+            labels.to(device,non_blocking=True),
+            img_ids.to(device,non_blocking=True),
         )
 
         images = torch.cat([x1, x2], dim=0)
         labels = torch.cat([labels, labels], dim=0)
         img_ids = torch.cat([img_ids, img_ids], dim=0)
-        
+
         optimizer.zero_grad()
         z = model(images)
 
@@ -136,7 +135,6 @@ def one_epoch_train(
             temperature=args.temperature,
             T=args.num_epochs,
         )
-        logger.info(f"Loss at step {step}: {loss.item():.4f}")
         loss.backward()
         optimizer.step()
 
@@ -167,11 +165,11 @@ def one_eval_epoch(
         for step, batch in enumerate(val_loader):
             (x1, x2), labels, img_ids = batch
             x1, x2, labels, img_ids = (
-            x1.to(device, non_blocking=True),
-            x2.to(device, non_blocking=True),
-            labels.to(device, non_blocking=True),
-            img_ids.to(device, non_blocking=True),
-        )
+                x1.to(device,non_blocking=True),
+                x2.to(device,non_blocking=True),
+                labels.to(device,non_blocking=True),
+                img_ids.to(device,non_blocking=True),
+            )
 
             images = torch.cat([x1, x2], dim=0)
             labels = torch.cat([labels, labels], dim=0)
@@ -215,8 +213,9 @@ def main():
 
     """Main training setup for distributed or single-node training."""
     # --- DataLoaders & DDP setup ---
+    train_loader, val_loader, _ = param_dataloader_init(args)
+
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    train_loader, val_loader, _ = param_dataloader_init(args, device)
 
     logger.info("Starting training...")
     # --- Model, criterion, optimizer ---
@@ -271,5 +270,4 @@ def main():
 
 
 if __name__ == "__main__":
-    mp.set_start_method('spawn', force=True)
     main()
