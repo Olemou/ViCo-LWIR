@@ -14,7 +14,6 @@ from ddp.dist_util import (
     get_world_size,
     get_rank,
     wrap_model,
-    get_model_device,
 )
 from train_logger.logger import TrainLogger
 from model.vit import VisionTransformer
@@ -24,7 +23,7 @@ from spatialcl.uwcl import build_uwcl
 from check_point.save_point import save_checkpoint
 
 
-def param_dataloader_init(args, logger: TrainLogger = None):
+def param_dataloader_init(args, device, logger: TrainLogger = None):
     """Main training setup for distributed or single-node training."""
 
     # --- Select transformation based on modality ---
@@ -35,7 +34,7 @@ def param_dataloader_init(args, logger: TrainLogger = None):
     if args.modality.get("rgb", False):
         transform = RgbAugmentation(RgbAugConfig()).transform
     elif args.modality.get("thermal", False):
-        transform = ThermalAugmentation(ThermalAugConfig()).transform
+        transform = ThermalAugmentation(ThermalAugConfig()).transform.transform.to(device)
     else:
         raise ValueError(
             "Please specify at least one valid modality: 'rgb' or 'thermal'."
@@ -45,6 +44,7 @@ def param_dataloader_init(args, logger: TrainLogger = None):
 
     train_dataset, val_dataset, test_dataset = get_datasets_and_loaders(
         root=args.root,
+        device= device,
         dataset_class= None if args.dataset_class is [None, "None"] else eval(args.dataset_class),
         transform=transform,
     )
@@ -112,12 +112,12 @@ def one_epoch_train(
     total_loss = 0.0
     for step, batch in enumerate(train_loader):
         (x1, x2), labels, img_ids = batch
-        x1, x2, labels, img_ids = (
+        '''x1, x2, labels, img_ids = (
             x1.to(device),
             x2.to(device),
             labels.to(device),
             img_ids.to(device),
-        )
+        )'''
 
         images = torch.cat([x1, x2], dim=0)
         labels = torch.cat([labels, labels], dim=0)
@@ -164,12 +164,12 @@ def one_eval_epoch(
     with torch.no_grad():
         for step, batch in enumerate(val_loader):
             (x1, x2), labels, img_ids = batch
-            x1, x2, labels, img_ids = (
+            '''x1, x2, labels, img_ids = (
                 x1.to(device),
                 x2.to(device),
                 labels.to(device),
                 img_ids.to(device),
-            )
+            )'''
 
             images = torch.cat([x1, x2], dim=0)
             labels = torch.cat([labels, labels], dim=0)
@@ -213,9 +213,8 @@ def main():
 
     """Main training setup for distributed or single-node training."""
     # --- DataLoaders & DDP setup ---
-    train_loader, val_loader, _ = param_dataloader_init(args)
-
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    train_loader, val_loader, _ = param_dataloader_init(args)
 
     logger.info("Starting training...")
     # --- Model, criterion, optimizer ---
