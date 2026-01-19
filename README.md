@@ -3,7 +3,7 @@
 **ViCo-LWIR** is a *plug-and-play contrastive learning framework* designed for spatially structured modalities(**thermal**) data, etc.
 It robustly handles *intra-* and *inter-class variability*, enabling consistent embeddings across challenging datasets.
 
-🧪 As a demonstration of its capabilities, **ViCo-LWIR** has been applied in **[DiSCO 🔗](https://github.com/Olemou/ViCo-LWIR)** — *Detection of Spills in Indoor environments using weakly supervised contrastive learning* — showcasing its practical impact in real-world spill detection scenarios.
+🧪 As a demonstration of its capabilities, **ViCo-LWIR** has been applied in **[Vico-LWIR 🔗](https://github.com/Olemou/ViCo-LWIR)** — *Detection of Spills in Indoor environments using weakly supervised contrastive learning* — showcasing its practical impact in real-world spill detection scenarios.
 
 ⚙️ While the framework is **modality-agnostic** and can be extended to other dense spatial tasks, extending **SpatialCL** to sparse, graph-structured data such as **skeletons** represents an exciting direction for future work.
 
@@ -238,7 +238,7 @@ torchrun \
       <h3 align="center">🧠 Pretrained Customized ViT-Base</h3>
     </td>
     <td style="text-align: center;">
-      <a href="https://github.com/Olemou/SpatialCL/releases/tag/SpatialCl_(DISCO)" download>
+      <a href="https://github.com/Olemou/ViCo-LWIR/releases/tag/ViCo-LWIR" download>
         <button style="padding: 10px 20px; font-size: 16px; cursor: pointer;">
           Download Weights
         </button>
