@@ -39,6 +39,10 @@ Long-Wave Infrared Imaging and a Weakly Supervised Contrastive) addresses one of
 - ✅ Produces **highly discriminative embeddings** for downstream tasks
 - ✅ Handles **class imbalance**
 - ✅ Easy integration into existing PyTorch pipelines
+## Demo
+<video width="600" controls>
+<source src="assets/demo_github.mp4" type="video/mp4">
+</video>
 
 ## 📦Installation
 
@@ -48,7 +52,7 @@ Long-Wave Infrared Imaging and a Weakly Supervised Contrastive) addresses one of
 <div align="left" style="margin-left:10%; height:30%;">
 <pre>
 <code>
-git clone https://github.com/Olemou/SpatialCL.git
+git clone https://github.com/Olemou/Vico-LWIR.git
 cd SpatialCL
 </code>
 </pre>
