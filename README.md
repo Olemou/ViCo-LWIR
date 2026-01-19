@@ -1,9 +1,9 @@
 ## 🧭 Overview
 
-**SpatialCL** is a *plug-and-play contrastive learning framework* designed for spatially structured modalities, including **RGB**, **thermal**, **RGB-D** data etc.
+**ViCo-LWIR** is a *plug-and-play contrastive learning framework* designed for spatially structured modalities(**thermal**) data, etc.
 It robustly handles *intra-* and *inter-class variability*, enabling consistent embeddings across challenging datasets.
 
-🧪 As a demonstration of its capabilities, **SpatialCL** has been applied in **[DiSCO 🔗](https://github.com/Olemou/SpatialCL)** — *Detection of Spills in Indoor environments using weakly supervised contrastive learning* — showcasing its practical impact in real-world spill detection scenarios.
+🧪 As a demonstration of its capabilities, **ViCo-LWIR** has been applied in **[DiSCO 🔗](https://github.com/Olemou/ViCo-LWIR)** — *Detection of Spills in Indoor environments using weakly supervised contrastive learning* — showcasing its practical impact in real-world spill detection scenarios.
 
 ⚙️ While the framework is **modality-agnostic** and can be extended to other dense spatial tasks, extending **SpatialCL** to sparse, graph-structured data such as **skeletons** represents an exciting direction for future work.
 
@@ -20,8 +20,9 @@ It robustly handles *intra-* and *inter-class variability*, enabling consistent 
 *compute the adaptive weight wij , addressing intra-class variability. For inter-class modeling, the parameter β is computed as described in the schema above*,
 *allowing the model to focus on hard negatives and enhance class separation. All these components are integrated into the final loss function Lij .*
 
-## 🎯 Why DISCO Submodule of SpatialCL?
-DISCO (Detection of Indoor Spills with Contrastive learning) addresses one of the most persistent challenges in computer vision: uncertainty under weak supervision. Traditional vision systems are typically designed and optimized for perception tasks involving rigid, well-structured objects with distinct geometric cues. However, these systems often fail when faced with visually ambiguous targets such as indoor liquid spills, whose irregular shapes, diffuse boundaries, and variable textures defy conventional object representations.
+## 🎯 Why ViCo-LWIR?
+ViCo-LWIR (ViCo-LWIR: Vision-Based detection of Indoor Liquid Spills Using
+Long-Wave Infrared Imaging and a Weakly Supervised Contrastive) addresses one of the most persistent challenges in computer vision: uncertainty under weak supervision. Traditional vision systems are typically designed and optimized for perception tasks involving rigid, well-structured objects with distinct geometric cues. However, these systems often fail when faced with visually ambiguous targets such as indoor liquid spills, whose irregular shapes, diffuse boundaries, and variable textures defy conventional object representations.
 
 - ✨ *The difficulty arises from several intertwined factors:*
 - ✨ *The absence of clear contours or well-defined shapes;*
