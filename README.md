@@ -40,9 +40,7 @@ Long-Wave Infrared Imaging and a Weakly Supervised Contrastive) addresses one of
 - ✅ Handles **class imbalance**
 - ✅ Easy integration into existing PyTorch pipelines
 ## Demo
-<video width="600" controls>
-<source src="assets/demo_github.mp4" type="video/mp4">
-</video>
+![Demo](assets/demo.gif)
 
 ## 📦Installation
 
