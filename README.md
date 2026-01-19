@@ -229,7 +229,7 @@ torchrun \
 </pre>
 </div>
 
-# 🅓 Results (DISCO)
+# 🅓 Results (ViCo-LWIR)
 ### 1️⃣ <b> Pretrained customize Vit-base </b>
 <table>
   <tr>
