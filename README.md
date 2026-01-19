@@ -95,7 +95,7 @@ pip install -e .
 </pre>
 </div>
 
-# 🅑 Usage of SpatialCL 
+# 🅑 Usage of ViCo-LWIR 
 
 -  ### 1️⃣ PypI Installation ###
 <div align="left" style="margin-left:10%; height:30%;">
@@ -194,7 +194,7 @@ output = build_uwcl(z=z, img_ids=img_id, labels=label, epoch=0, device="cpu")
 </pre>
 </div>
 
-# 🅒 Training & Evalidation (DISCO)
+# 🅒 Training & Evalidation (ViCo-LWIR)
 
 ### 🎯 Single-GPU (Non-Distributed) Training
 ***root: stands for your data folder path*** 
@@ -258,7 +258,7 @@ torchrun \
 </table>
 
 
-# 🅔 Visualization (DISCO)
+# 🅔 Visualization (ViCo-LWIR)
 ### 1️⃣ <b> Original vs Attention-Map </b>
 <table align="center">
   <tr>
@@ -273,7 +273,7 @@ torchrun \
   </tr>
 </table>
 
-# 🅕 Beyond DISCO / SpatialCL applied to Anomaly Detection 
+# 🅕 Beyond ViCo-LWIR / SpatialCL(ViCo-LWIR transform in a python packaging) applied to Anomaly Detection 
 ## key  features
 - ✅ Handle  **class level variability** for downstream tasks
 - ✅ Handles **class imbalance**
