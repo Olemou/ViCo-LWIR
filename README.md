@@ -98,8 +98,8 @@ pip install -e .
 </div>
 
 # 🅑 Usage of ViCo-LWIR 
-### 2️⃣ Learn More
-- [Visit our GitHub for details](https://github.com/Olemou/Vico-Clr_Usage)
+### Learn More
+- [Visit our guidance for details](https://olemou.github.io/Vico-Clr_Usage/)
 
 
 # 🅒 Training & Evalidation (ViCo-LWIR)
@@ -255,7 +255,11 @@ torchrun \
     <td align="center"><img src="assets/anomaly/transitor/bend_attn.png" width="200"></td>
   </tr>
 
-</table>
+</table
+  
+# Vico-LWIR article
+### Learn More
+ [Visit](https://drive.google.com/file/d/1n1PWURCi0AniymTkhyVbjZZlY_de8INF/view?usp=sharing)
   
 
 
